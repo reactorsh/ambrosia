@@ -185,6 +185,9 @@ The system prompt to use for models that support it.
 `--fields, -f`<br>
 The fields to pass along in the prompt for each piece of data.  Multiple fields can be specified by passing them as a comma-separated list.  E.g., `--fields input,output`.  By default, all fields are sent, **but the order is not guaranteed**.  If you need a specific order (and you probably do), specify the fields explicitly.
 
+`--json, -j`<br>
+When running inference, send the data as JSON instead of plaintext prefixed with field names.  This is helpful if you're running into issues where the LLM is confused about which part of a request is data and which part is an instruction.
+
 `--include-resp, -ir`<br>
 If set, `--include-resp` will add the complete response from the LLM as a new field named `ambrosia` in the output file(s).  Very helpful for prompt debugging.
 
