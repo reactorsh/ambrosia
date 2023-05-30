@@ -1,6 +1,7 @@
 Ambrosia<!-- omit from toc -->
 ========
 [![tests](https://github.com/reactorsh/ambrosia/actions/workflows/tests.yml/badge.svg)](https://github.com/reactorsh/ambrosia/actions/workflows/tests.yml)
+![GitHub](https://img.shields.io/github/license/reactorsh/ambrosia)
 
 Ambrosia is a cross-platform command line tool for improving the text datasets you use for machine learning.
 
