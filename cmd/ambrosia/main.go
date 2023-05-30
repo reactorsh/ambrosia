@@ -254,6 +254,12 @@ func main() {
 						Usage:   "the json `FIELD`(s) to use for prompts.  All fields used in random order if not specified.",
 					},
 					&cli.BoolFlag{
+						Name:    "json",
+						Aliases: []string{"j"},
+						EnvVars: []string{"AMBROSIA_JSON", "JSON"},
+						Usage:   "send data portion of prompt as a json object, instead of a string with fields",
+					},
+					&cli.BoolFlag{
 						Name:    "include-resp",
 						Aliases: []string{"ir"},
 						EnvVars: []string{"AMBROSIA_INCLUDE_RESP", "INCLUDE_RESP"},

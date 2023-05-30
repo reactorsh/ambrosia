@@ -1,8 +1,10 @@
 package internal
 
 import (
+	"encoding/json"
 	"flag"
 	"os"
+	"reflect"
 	"strconv"
 	"testing"
 
@@ -214,4 +216,63 @@ func TestDedupe(t *testing.T) {
 
 		assert.Equal(t, expected, dedupe(ctx, data))
 	})
+}
+
+func TestDatum_JSON(t *testing.T) {
+	tests := []struct {
+		name    string
+		d       datum
+		keys    []string
+		want    string
+		wantErr bool
+	}{
+		{
+			name: "Test with existing keys",
+			d: datum{
+				"key1": "value1",
+				"key2": "value2",
+				"key3": "value3",
+			},
+			keys:    []string{"key1", "key3"},
+			want:    `{"key1":"value1","key3":"value3"}`,
+			wantErr: false,
+		},
+		{
+			name: "Test with non-existing keys",
+			d: datum{
+				"key1": "value1",
+				"key2": "value2",
+				"key3": "value3",
+			},
+			keys:    []string{"key4", "key5"},
+			want:    `{}`,
+			wantErr: false,
+		},
+		{
+			name:    "Test with empty datum",
+			d:       datum{},
+			keys:    []string{"key1", "key2"},
+			want:    `{}`,
+			wantErr: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.d.JSON(tt.keys)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("datum.JSON() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			var gotMap map[string]interface{}
+			json.Unmarshal([]byte(got), &gotMap)
+
+			var wantMap map[string]interface{}
+			json.Unmarshal([]byte(tt.want), &wantMap)
+
+			if !reflect.DeepEqual(gotMap, wantMap) {
+				t.Errorf("datum.JSON() = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }

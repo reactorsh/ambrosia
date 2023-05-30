@@ -141,18 +141,26 @@ func submitPrompts(c *cmdCtx, queue chan<- providers.InferRequest, data []datum)
 			fmt.Fprintf(&b, "%s\n\n", c.c.String("instruction"))
 		}
 
-		// Handle 'all fields' case
-		if len(c.c.StringSlice("fields")) == 0 {
-			for field, value := range d {
-				fmt.Fprintf(&b, "%s: %v\n", field, value)
+		if c.c.Bool("json") {
+			jb, err := d.JSON(c.c.StringSlice("fields"))
+			if err != nil {
+				c.logger.Fatal().Err(err).Msg("error marshalling json")
 			}
-		}
+			fmt.Fprintf(&b, "%s\n", string(jb))
+		} else {
+			// Handle 'all fields' case
+			if len(c.c.StringSlice("fields")) == 0 {
+				for field, value := range d {
+					fmt.Fprintf(&b, "%s: %v\n", field, value)
+				}
+			}
 
-		// Handle specific fields
-		for _, field := range c.c.StringSlice("fields") {
-			val, ok := d[field]
-			if ok {
-				fmt.Fprintf(&b, "%s: %v\n", field, val)
+			// Handle specific fields
+			for _, field := range c.c.StringSlice("fields") {
+				val, ok := d[field]
+				if ok {
+					fmt.Fprintf(&b, "%s: %v\n", field, val)
+				}
 			}
 		}
 
