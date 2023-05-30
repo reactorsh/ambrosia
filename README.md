@@ -36,7 +36,7 @@ Simply download the latest version from the [release page](https://github.com/re
 
 ## Getting started
 
-A complete feature walkthrough of cleaning a dataset is available here.
+A complete feature walkthrough of cleaning a dataset is available [here](https://reactor.sh/post/ambrosia-gpteacher/).
 
 ## Commands and Options
 
